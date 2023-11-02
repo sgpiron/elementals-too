@@ -1,7 +1,7 @@
 # elementals-too
 ai rouge-like
 
-![image](cutscene.png)
+![image](cutscene.png){ width=50%, height=50% }
 ![image](gameplay1.png)
 ![image](gameplay2.png)
 
