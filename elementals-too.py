@@ -6,15 +6,18 @@ import os
 import random
 import openai
 
-#THEME= "Yakuza world in Tokyo's Kabukicho district"
+
 THEME= "Star Trek-like universe"
 THEME= "Cold war spy movie set in Moscow"
 THEME="alex krizhevsky must defeat the evil feature engineers"
+THEME="Angry pumpkins, halloween themed game"
+THEME= "Yakuza world in Tokyo's Kabukicho district"
 
 PROMPT = THEME+" in the style of a 90s video game"
 
-openai.api_key = "REPLACE_WITH_YOUR_OPEN_AI_KEY"
-
+f = open("openai-api.key", "r")
+key=f.read()
+openai.api_key = key.replace("\n","")
 response = openai.Image.create(
     prompt=PROMPT,
     n=1,
@@ -29,22 +32,7 @@ if response.status_code:
     fp.write(response.content)
     fp.close()
     
-'''    
-PROMT = "wall tile from a video game with a "+THEME+" theme."
-response = openai.Image.create(
-    prompt=PROMPT,
-    n=1,
-    size="256x256",
-)
 
-img_url = response["data"][0]["url"]
-
-response = requests.get(img_url)
-if response.status_code:
-    fp = open('wall_tile.png', 'wb')
-    fp.write(response.content)
-    fp.close()    
-'''
     
 PROMPT = THEME+" hero character in the style of a 90s video game"
 
@@ -87,7 +75,7 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 TILE_SIZE = 40
-FIGHT = True
+FIGHT = False
 
 # Colors for different tiles (used as fallback if bitmaps fail)
 BLACK = (0, 0, 0)
@@ -198,6 +186,12 @@ class Enemy:
         self.x = x
         self.y = y
         self.behavior = behavior
+        self.health = 80
+        self.attack = 8
+        self.defense = 3
+        self.weapon = "knife"
+        self.gold = 10
+        self.items=["knife"]
 
     def move_towards(self, target_x, target_y):
         if random.randint(0,3) == 3:
@@ -269,6 +263,7 @@ def display_story(screen):
 
 
 def display_hud(screen, player):
+    print("draw hud")
     hud_height = 60
     pygame.draw.rect(screen, GRAY, (0, SCREEN_HEIGHT - hud_height, SCREEN_WIDTH, hud_height))
 
@@ -287,8 +282,8 @@ def display_hud(screen, player):
     screen.blit(font.render(gold_text, True, GRAY), (200, SCREEN_HEIGHT - 125))
     screen.blit(font.render(weapon_text, True, GRAY), (200, SCREEN_HEIGHT - 100))
     screen.blit(HERO_IMG_BIG, (0, SCREEN_HEIGHT - 240))
-    if FIGHT:
-        screen.blit(VILLAN_IMG_BIG, (SCREEN_WIDTH-250, SCREEN_HEIGHT - 240))  
+    #if FIGHT:
+    #    screen.blit(VILLAN_IMG_BIG, (SCREEN_WIDTH-240, SCREEN_HEIGHT - 240))  
 
 
 # Main game loop
@@ -302,6 +297,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Bitmap Roguelike')
     clock = pygame.time.Clock()
+    player = Player(1, 1) 
     enemies = [Enemy(5, 5, 'chase'),Enemy(8, 5, 'chase')]
     
     while True:
@@ -325,20 +321,39 @@ def main():
         screen.fill(BLACK)  # Default color for 'empty' space
         draw_map(screen)
         player.draw(screen)
-      
+
+        for enemy in enemies:
+            if enemy.x == player.x and enemy.y==player.y:
+                FIGHT=True
+                print("fight")
+                #display_hud(screen, player)
+                #pygame.display.flip()
+                font = pygame.font.SysFont("nineteenninetyseven11xb", 16)
+                screen.blit(VILLAN_IMG_BIG, (SCREEN_WIDTH-180, SCREEN_HEIGHT - 240))  
+                health_text = f"Health: {enemy.health}"
+                attack_text = f"Attack: {enemy.attack}"
+                defense_text = f"Defense: {enemy.defense}"
+                weapon_text = f"Weapon: {enemy.weapon}"
+                gold_text = f"Gold: {enemy.gold}"
+
+                screen.blit(font.render(health_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 200))
+                screen.blit(font.render(attack_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 175))
+                screen.blit(font.render(defense_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 150))
+                screen.blit(font.render(gold_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 125))
+                screen.blit(font.render(weapon_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 100))
+
        	display_hud(screen, player)
+
         for enemy in enemies:
             enemy.draw(screen)
         
-        for enemy in enemies:
-             if enemy.x == player.x and enemy.y==player.y:
-                 FIGHT=True
-                 print("fight")
+     
                  
         if tilemap[player.y][player.x] == EXIT:
               #main()
-              pygame.quit()
-              sys.exit()
+              main()
+              #pygame.quit()
+              #sys.exit()
 
                      
         pygame.display.flip()
