@@ -350,10 +350,8 @@ def main():
      
                  
         if tilemap[player.y][player.x] == EXIT:
-              #main()
-              main()
-              #pygame.quit()
-              #sys.exit()
+              pygame.quit()
+              sys.exit()
 
                      
         pygame.display.flip()
