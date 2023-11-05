@@ -1,0 +1,5 @@
+- refactor Player, Enemy class
+- 3 act story, and game loop
+- fight mechanics
+- store assets/generate flag
+- move enemy large icon, correct large enemy icon

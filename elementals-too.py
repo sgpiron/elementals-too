@@ -67,6 +67,22 @@ if response.status_code:
     fp.write(response.content)
     fp.close()
 
+PROMPT = THEME+" villan character in the style of a 90s video game"
+
+response = openai.Image.create(
+    prompt=PROMPT,
+    n=1,
+    size="256x256",
+)
+
+img_url = response["data"][0]["url"]
+
+response = requests.get(img_url)
+if response.status_code:
+    fp = open('villan2.png', 'wb')
+    fp.write(response.content)
+    fp.close()
+
 
 # Initialize pygame
 pygame.init()
@@ -98,6 +114,9 @@ HERO_IMG = pygame.transform.scale(HERO_IMG,(TILE_SIZE, TILE_SIZE))
 VILLAN_IMG = pygame.image.load('villan.png')
 VILLAN_IMG_BIG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
+VILLAN_IMG2 = pygame.image.load('villan2.png')
+VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
+VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
 
 # Load map from file
 def load_map(filename):
@@ -182,7 +201,7 @@ def draw_map(screen):
 
 
 class Enemy:
-    def __init__(self, x, y, behavior):
+    def __init__(self, x, y, behavior,type):
         self.x = x
         self.y = y
         self.behavior = behavior
@@ -236,8 +255,10 @@ class Enemy:
     def draw(self, screen):
         color = (0, 255, 0) if self.behavior == 'chase' else (0, 0, 255)
         #pygame.draw.ellipse(screen, color, (self.x * TILE_SIZE, self.y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-        screen.blit(VILLAN_IMG, (self.x * TILE_SIZE, self.y * TILE_SIZE))
-
+        if type == 1:
+            screen.blit(VILLAN_IMG, (self.x * TILE_SIZE, self.y * TILE_SIZE))
+        else:
+            screen.blit(VILLAN_IMG2, (self.x * TILE_SIZE, self.y * TILE_SIZE))
 
 def display_story(screen):
     txt=gpt4(THEME)
@@ -298,7 +319,7 @@ def main():
     pygame.display.set_caption('Bitmap Roguelike')
     clock = pygame.time.Clock()
     player = Player(1, 1) 
-    enemies = [Enemy(5, 5, 'chase'),Enemy(8, 5, 'chase')]
+    enemies = [Enemy(5, 5, 'chase',1),Enemy(8, 5, 'chase',2)]
     
     while True:
         for event in pygame.event.get():
