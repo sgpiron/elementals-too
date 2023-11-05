@@ -6,82 +6,94 @@ import os
 import random
 import openai
 
+Generate=True
 
 THEME= "Star Trek-like universe"
 THEME= "Cold war spy movie set in Moscow"
 THEME="alex krizhevsky must defeat the evil feature engineers"
 THEME="Angry pumpkins, halloween themed game"
 THEME= "Yakuza world in Tokyo's Kabukicho district"
-
-PROMPT = THEME+" in the style of a 90s video game"
+#THEME= "Cold war spy movie set in Moscow"
+#THEME= "An action movie set in 1980s Miami. Rookie cop must infiltrate the crime syndicate taking over his city. "
+#THEME= "set in medieval Persia. While the sultan is fighting a war in a foreign land, his vizier Jaffar, a wizard, seizes power.  "
+#THEME= "1970s New York. Joe Palermo had been able to avoid the life of crime around, until the Bonano crime family set his father's resturant on fire. Now Joe is looking for revenge"
+#THEME= "Gitty Scorsese-style Mafia world in 1970s New York City"
+#THEME="The Wild West, Monument Valley"
+#PROMPT = THEME+" in the style of a 90s video game"
+PROMPT = THEME+" in a cinematic style"
 
 f = open("openai-api.key", "r")
 key=f.read()
 openai.api_key = key.replace("\n","")
-response = openai.Image.create(
-    prompt=PROMPT,
-    n=1,
-    size="256x256",
-)
 
-img_url = response["data"][0]["url"]
+#generate images
 
-response = requests.get(img_url)
-if response.status_code:
-    fp = open('greenland_01a.png', 'wb')
-    fp.write(response.content)
-    fp.close()
-    
+if Generate:
 
-    
-PROMPT = THEME+" hero character in the style of a 90s video game"
+    response = openai.Image.create(
+        prompt=PROMPT,
+        n=1,
+        size="256x256",
+    )
 
-response = openai.Image.create(
-    prompt=PROMPT,
-    n=1,
-    size="256x256",
-)
+    img_url = response["data"][0]["url"]
 
-img_url = response["data"][0]["url"]
+    response = requests.get(img_url)
+    if response.status_code:
+        fp = open('greenland_01a.png', 'wb')
+        fp.write(response.content)
+        fp.close()
+        
 
-response = requests.get(img_url)
-if response.status_code:
-    fp = open('hero.png', 'wb')
-    fp.write(response.content)
-    fp.close()
-    
+        
+    PROMPT = THEME+" hero character in the style of a 90s video game"
 
-PROMPT = THEME+" villan character in the style of a 90s video game"
+    response = openai.Image.create(
+        prompt=PROMPT,
+        n=1,
+        size="256x256",
+    )
 
-response = openai.Image.create(
-    prompt=PROMPT,
-    n=1,
-    size="256x256",
-)
+    img_url = response["data"][0]["url"]
 
-img_url = response["data"][0]["url"]
+    response = requests.get(img_url)
+    if response.status_code:
+        fp = open('hero.png', 'wb')
+        fp.write(response.content)
+        fp.close()
+        
 
-response = requests.get(img_url)
-if response.status_code:
-    fp = open('villan.png', 'wb')
-    fp.write(response.content)
-    fp.close()
+    PROMPT = THEME+" villan character in the style of a 90s video game"
 
-PROMPT = THEME+" villan character in the style of a 90s video game"
+    response = openai.Image.create(
+        prompt=PROMPT,
+        n=1,
+        size="256x256",
+    )
 
-response = openai.Image.create(
-    prompt=PROMPT,
-    n=1,
-    size="256x256",
-)
+    img_url = response["data"][0]["url"]
 
-img_url = response["data"][0]["url"]
+    response = requests.get(img_url)
+    if response.status_code:
+        fp = open('villan.png', 'wb')
+        fp.write(response.content)
+        fp.close()
 
-response = requests.get(img_url)
-if response.status_code:
-    fp = open('villan2.png', 'wb')
-    fp.write(response.content)
-    fp.close()
+    PROMPT = THEME+" villan character in the style of a 90s video game"
+
+    response = openai.Image.create(
+        prompt=PROMPT,
+        n=1,
+        size="256x256",
+    )
+
+    img_url = response["data"][0]["url"]
+
+    response = requests.get(img_url)
+    if response.status_code:
+        fp = open('villan2.png', 'wb')
+        fp.write(response.content)
+        fp.close()
 
 
 # Initialize pygame
@@ -115,8 +127,8 @@ VILLAN_IMG = pygame.image.load('villan.png')
 VILLAN_IMG_BIG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
 VILLAN_IMG2 = pygame.image.load('villan2.png')
-VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
-VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
+VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE*4, TILE_SIZE*4))
+VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE, TILE_SIZE))
 
 # Load map from file
 def load_map(filename):
@@ -186,7 +198,61 @@ class Player:
         #pygame.draw.rect(screen, (255, 0, 0), (self.x * TILE_SIZE, self.y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
         screen.blit(HERO_IMG, (self.x * TILE_SIZE, self.y * TILE_SIZE))
 
-player = Player(1, 1)  # Starting position
+    def attack_enemy(self, enemy):
+        damage = self.attack - (enemy.defense // 2)
+        damage = max(1, damage)  # Ensure at least 1 damage is dealt
+        enemy.health = max(0, enemy.health - damage)  # Ensure health does not go below 0
+        print(f"Player attacks with {self.weapon} and deals {damage} damage!")
+
+
+def battle(player, enemy):
+    #while True:
+        # Player's turn
+        #action = input("Do you want to [A]ttack or [R]un? ").lower()
+
+        '''for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_PERIOD:
+                    player.attack_enemy(enemy)
+                elif event.key == pygame.K_COMMA:
+                    return'''
+        '''if action == 'a':
+            player.attack_enemy(enemy)
+        elif action == 'r':
+            if player.run():
+                print("You successfully escaped.")
+                break'''
+
+        player.attack_enemy(enemy)
+        # Check if enemy is defeated
+        if enemy.health <= 0:
+            print("Enemy is defeated!")
+            player.gold += enemy.gold
+            print(f"You have gained {enemy.gold} gold. Your current gold: {player.gold}")
+            enemies.remove(enemy)
+            return
+        
+        # Enemy's turn
+        enemy.attack_player(player)
+
+        # Check if player is defeated
+        if player.health <= 0:
+            print("You have been defeated!")
+            return
+
+        
+        print(f"Player's Health: {player.health}, Enemy's Health: {enemy.health}")
+        
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type in [pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN]:  # Any key or mouse click
+                    return
+
+
+
 
 # Drawing the map using tile images
 def draw_map(screen):
@@ -201,7 +267,7 @@ def draw_map(screen):
 
 
 class Enemy:
-    def __init__(self, x, y, behavior,type):
+    def __init__(self, x, y, behavior, creature_type):
         self.x = x
         self.y = y
         self.behavior = behavior
@@ -211,6 +277,13 @@ class Enemy:
         self.weapon = "knife"
         self.gold = 10
         self.items=["knife"]
+        self.creature_type=creature_type
+        if creature_type==1:
+            self.image = VILLAN_IMG
+            self.imageBIG = VILLAN_IMG_BIG
+        else:
+            self.image = VILLAN_IMG2
+            self.imageBIG = VILLAN_IMG_BIG2
 
     def move_towards(self, target_x, target_y):
         if random.randint(0,3) == 3:
@@ -255,13 +328,25 @@ class Enemy:
     def draw(self, screen):
         color = (0, 255, 0) if self.behavior == 'chase' else (0, 0, 255)
         #pygame.draw.ellipse(screen, color, (self.x * TILE_SIZE, self.y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-        if type == 1:
+        if self.creature_type == 1:
             screen.blit(VILLAN_IMG, (self.x * TILE_SIZE, self.y * TILE_SIZE))
         else:
             screen.blit(VILLAN_IMG2, (self.x * TILE_SIZE, self.y * TILE_SIZE))
+    
+    def attack_player(self, player):
+        damage = self.attack - (player.defense // 2)
+        damage = max(1, damage)
+        player.health = max(0, player.health - damage)
+        print(f"Enemy attacks with {self.weapon} and deals {damage} damage!")
+
+player = Player(1, 1)  # Starting position
+enemies = [Enemy(5, 5, 'chase',1),Enemy(8, 5, 'chase',2)] 
 
 def display_story(screen):
     txt=gpt4(THEME)
+    f = open("cutscene.txt", "w")
+    f.write(txt)
+    f.close()
     t=textwrap.fill(txt,70)
     story_text = t.split("\n")
 	
@@ -319,7 +404,7 @@ def main():
     pygame.display.set_caption('Bitmap Roguelike')
     clock = pygame.time.Clock()
     player = Player(1, 1) 
-    enemies = [Enemy(5, 5, 'chase',1),Enemy(8, 5, 'chase',2)]
+
     
     while True:
         for event in pygame.event.get():
@@ -350,7 +435,7 @@ def main():
                 #display_hud(screen, player)
                 #pygame.display.flip()
                 font = pygame.font.SysFont("nineteenninetyseven11xb", 16)
-                screen.blit(VILLAN_IMG_BIG, (SCREEN_WIDTH-180, SCREEN_HEIGHT - 240))  
+                screen.blit(enemy.imageBIG, (SCREEN_WIDTH-180, SCREEN_HEIGHT - 240))  
                 health_text = f"Health: {enemy.health}"
                 attack_text = f"Attack: {enemy.attack}"
                 defense_text = f"Defense: {enemy.defense}"
@@ -362,6 +447,8 @@ def main():
                 screen.blit(font.render(defense_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 150))
                 screen.blit(font.render(gold_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 125))
                 screen.blit(font.render(weapon_text, True, GRAY), (SCREEN_WIDTH-300, SCREEN_HEIGHT - 100))
+
+                battle(player, enemy)
 
        	display_hud(screen, player)
 
