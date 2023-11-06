@@ -5,6 +5,7 @@ import textwrap
 import os
 import random
 import openai
+import time
 
 Generate=True
 
@@ -250,6 +251,7 @@ def battle(player, enemy):
                     sys.exit()
                 if event.type in [pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN]:  # Any key or mouse click
                     return
+        time.sleep(.25)
 
 
 
