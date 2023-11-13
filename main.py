@@ -71,7 +71,9 @@ def game_loop():
                     (game_config.get_setting("screen_width") - 300, game_config.get_setting("screen_height")),
                     (game_config.get_setting("screen_width") - 180, game_config.get_setting("screen_height") - 240)
                 )
-                battle(player, enemy)
+                outcome = battle(player, enemy)
+                if outcome == 0:
+                    enemies.remove(enemy)
         
         # Display the player stats
         display_stats(screen, player, (200, game_config.get_setting("screen_height")), (0, game_config.get_setting("screen_height") - 240))

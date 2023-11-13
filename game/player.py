@@ -7,7 +7,7 @@ class Player:
         self.x = x
         self.y = y
         self.health = 100
-        self.attack = 10
+        self.attack_strength = 10
         self.defense = 5
         self.weapon = "knife"
         self.gold = 100
@@ -26,8 +26,7 @@ class Player:
     def draw(self, screen):
         screen.blit(self.small_image_asset, (self.x * game_config.get_setting("tile_size"), self.y * game_config.get_setting("tile_size")))
 
-    def attack_enemy(self, enemy):
-        damage = self.attack - (enemy.defense // 2)
+    def attack(self, enemy):
+        damage = self.attack_strength - (enemy.defense // 2)
         damage = max(1, damage)  # Ensure at least 1 damage is dealt
         enemy.health = max(0, enemy.health - damage)  # Ensure health does not go below 0
-        print(f"Player attacks with {self.weapon} and deals {damage} damage!")

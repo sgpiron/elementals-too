@@ -9,7 +9,7 @@ class Enemy:
         self.y = y
         self.behavior = behavior
         self.health = 80
-        self.attack = 8
+        self.attack_strength = 8
         self.defense = 3
         self.weapon = "knife"
         self.gold = 10
@@ -60,8 +60,7 @@ class Enemy:
         color = (0, 255, 0) if self.behavior == 'chase' else (0, 0, 255)
         screen.blit(self.small_image_asset, (self.x * game_config.get_setting("tile_size"), self.y * game_config.get_setting("tile_size")))
     
-    def attack_player(self, player):
-        damage = self.attack - (player.defense // 2)
+    def attack(self, player):
+        damage = self.attack_strength - (player.defense // 2)
         damage = max(1, damage)
         player.health = max(0, player.health - damage)
-        print(f"Enemy attacks with {self.weapon} and deals {damage} damage!")

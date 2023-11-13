@@ -59,7 +59,7 @@ def display_story(screen):
 def display_stats(screen, character, text_location, image_location):
     font = pygame.font.SysFont('nineteenninetyseven11xb', 16)
     screen.blit(font.render(f"Health: {character.health}", True, (100, 100, 100)), (text_location[0], text_location[1]-200))
-    screen.blit(font.render(f"Attack: {character.attack}", True, (100, 100, 100)), (text_location[0], text_location[1]-175))
+    screen.blit(font.render(f"Attack: {character.attack_strength}", True, (100, 100, 100)), (text_location[0], text_location[1]-175))
     screen.blit(font.render(f"Defense: {character.defense}", True, (100, 100, 100)), (text_location[0], text_location[1]-150))
     screen.blit(font.render(f"Weapon: {character.weapon}", True, (100, 100, 100)), (text_location[0], text_location[1]-125))
     screen.blit(font.render(f"Gold: {character.gold}", True, (100, 100, 100)), (text_location[0], text_location[1]-100))
@@ -67,7 +67,27 @@ def display_stats(screen, character, text_location, image_location):
 
 
 def battle(player, enemy):
-    pass
+    # Perform the attack
+    player.attack(enemy)
+    # Check if the enemy is defeated
+    if enemy.health <= 0:
+        player.gold += enemy.gold
+        player.items += enemy.items
+        return 0
+    # Perform the counter attack
+    enemy.attack(player)
+    # Check if the player is defeated
+    if player.health <= 0:
+        return 1
+    # Event loop
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type in [pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN]:  # Any key or mouse click
+                return 1
+    time.sleep(.25)
 
 
 def handle_event(event, player, enemies):

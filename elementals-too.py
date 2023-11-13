@@ -127,7 +127,7 @@ HERO_IMG = pygame.transform.scale(HERO_IMG,(TILE_SIZE, TILE_SIZE))
 VILLAN_IMG = pygame.image.load('game_resources/enemy_1.png')
 VILLAN_IMG_BIG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
-VILLAN_IMG2 = pygame.image.load('game_resources/enemy_2.png')
+VILLAN_IMG2 = pygame.image.load('game_resources/villan2.png')
 VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE, TILE_SIZE))
 
