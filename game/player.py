@@ -1,3 +1,6 @@
+from game.settings import game_config
+
+
 class Player:
 
     def __init__(self, x, y):
@@ -8,19 +11,20 @@ class Player:
         self.defense = 5
         self.weapon = "knife"
         self.gold = 100
-        self.items=["knife"]
+        self.items = ["knife"]
+        self.small_image_asset = game_config.get_asset_as_image(f"hero_small")
+        self.big_image_asset = game_config.get_asset_as_image(f"hero_big")
 
     def move(self, dx, dy):
         # Check the tilemap to see if the move is onto a wall.
-        if tilemap[self.y + dy][self.x + dx] == WALL:
+        if game_config.tilemap[self.y + dy][self.x + dx] == game_config.get_asset_map_char("wall"):
             return
         # Update movement
         self.x += dx
         self.y += dy
 
     def draw(self, screen):
-        #pygame.draw.rect(screen, (255, 0, 0), (self.x * TILE_SIZE, self.y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-        screen.blit(HERO_IMG, (self.x * TILE_SIZE, self.y * TILE_SIZE))
+        screen.blit(self.small_image_asset, (self.x * game_config.get_setting("tile_size"), self.y * game_config.get_setting("tile_size")))
 
     def attack_enemy(self, enemy):
         damage = self.attack - (enemy.defense // 2)

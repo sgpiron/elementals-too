@@ -1,9 +1,10 @@
 from game.settings import game_config
+import random
 
 
 class Enemy:
     
-    def __init__(self, x, y, behavior, creature_type, image_asset):
+    def __init__(self, x, y, behavior, creature_type):
         self.x = x
         self.y = y
         self.behavior = behavior
@@ -12,32 +13,33 @@ class Enemy:
         self.defense = 3
         self.weapon = "knife"
         self.gold = 10
-        self.items=["knife"]
-        self.creature_type=creature_type
-        self.image_asset=image_asset
+        self.items = ["knife"]
+        self.creature_type = creature_type
+        self.small_image_asset = game_config.get_asset_as_image(f"enemy_{creature_type}_small")
+        self.big_image_asset = game_config.get_asset_as_image(f"enemy_{creature_type}_big")
 
     def move_towards(self, target_x, target_y):
         if random.randint(0,3) == 3:
             return
     		
         if target_x > self.x:
-            if tilemap[self.y][self.x + 1] == WALL:
+            if game_config.tilemap[self.y][self.x + 1] == game_config.get_asset_map_char("wall"):
             	self.x=self.x
             else:
             	self.x += 1
         elif target_x < self.x:
-            if tilemap[self.y][self.x-1] == WALL:
+            if game_config.tilemap[self.y][self.x-1] == game_config.get_asset_map_char("wall"):
             	self.x=self.x
             else:
 	            self.x -= 1
 
         if target_y > self.y:
-            if tilemap[self.y+1][self.x] == WALL:
+            if game_config.tilemap[self.y+1][self.x] == game_config.get_asset_map_char("wall"):
                 self.y=self.y	
             else:
                 self.y += 1
         elif target_y < self.y:
-            if tilemap[self.y-1][self.x] == WALL:
+            if game_config.tilemap[self.y-1][self.x] == game_config.get_asset_map_char("wall"):
                 self.y=self.y	
             else: 
                 self.y -= 1
@@ -56,10 +58,7 @@ class Enemy:
 
     def draw(self, screen):
         color = (0, 255, 0) if self.behavior == 'chase' else (0, 0, 255)
-        if self.creature_type == 1:
-            screen.blit(self.image_asset, (self.x * game_config.get_setting("tile_size"), self.y * game_config.get_setting("tile_size")))
-        else:
-            screen.blit(self.image_asset, (self.x * game_config.get_setting("tile_size"), self.y * game_config.get_setting("tile_size")))
+        screen.blit(self.small_image_asset, (self.x * game_config.get_setting("tile_size"), self.y * game_config.get_setting("tile_size")))
     
     def attack_player(self, player):
         damage = self.attack - (player.defense // 2)

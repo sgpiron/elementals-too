@@ -15,16 +15,22 @@ class Config:
             "cutscene": {
                 "path": "cutscene.txt"
             },
+            "map": {
+                "path": "map.txt"
+            },
             "floor": {
                 "path": "floor.bmp",
+                "map_char": ".",
                 "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
             },
             "wall": {
                 "path": "wall.bmp",
+                "map_char": "#",
                 "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
             },
             "exit": {
                 "path": "exit.bmp",
+                "map_char": "*",
                 "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
             },
             "story": {
@@ -39,31 +45,39 @@ class Config:
                 "path": "hero.png",
                 "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4)
             },
-            "villian_one_small": {
-                "path": "villian_one.png",
+            "enemy_1_small": {
+                "path": "enemy_1.png",
                 "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
             },
-            "villian_one_big": {
-                "path": "villian_one.png",
+            "enemy_1_big": {
+                "path": "enemy_1.png",
                 "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4)
             },
-            "villian_two_small": {
-                "path": "villian_two.png",
+            "enemy_2_small": {
+                "path": "enemy_2.png",
                 "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
             },
-            "villian_two_big": {
-                "path": "villian_two.png",
+            "enemy_2_big": {
+                "path": "enemy_2.png",
                 "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4)
             }
         }
+        self.tilemap = self.load_map(self.get_asset_path("map"))
 
     def load_api_key(self, filename="openai-api.key"):
         with open(filename, "r") as f:
             return f.read().strip()
 
-    def load_map(self, filename="map.txt"):
-        with open(f'{self._RESOURCE_PATH}/{filename}', "r") as f:
-            return f.readlines()
+    def load_map(self, filename):
+        with open(filename, "r") as f:
+            lines = f.readlines()
+        tilemap = []
+        for line in lines:
+            row = []
+            for char in line.strip():
+                row.append(char)
+            tilemap.append(row)
+        return tilemap
 
     def get_setting(self, key):
         return self._game_settings[key]
@@ -76,6 +90,9 @@ class Config:
 
     def get_asset_size(self, key):
         return self._assets[key]["size"]
+
+    def get_asset_map_char(self, key):
+        return self._assets[key]["map_char"]
 
     def get_asset_as_image(self, key):
         return pygame.transform.scale(pygame.image.load(self.get_asset_path(key)), self.get_asset_size(key))
