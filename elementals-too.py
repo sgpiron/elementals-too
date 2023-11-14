@@ -116,18 +116,18 @@ FLOOR = 0
 EXIT=-1
 
 # Load tile images (and scale if needed)
-FLOOR_IMG = pygame.transform.scale(pygame.image.load('floor.bmp'), (TILE_SIZE, TILE_SIZE))
-WALL_IMG = pygame.transform.scale(pygame.image.load('wall.bmp'), (TILE_SIZE, TILE_SIZE))
-EXIT_IMG = pygame.transform.scale(pygame.image.load('exit.bmp'), (TILE_SIZE, TILE_SIZE))
-STORY_IMG = pygame.image.load('greenland_01a.png')
+FLOOR_IMG = pygame.transform.scale(pygame.image.load('game_resources/floor.bmp'), (TILE_SIZE, TILE_SIZE))
+WALL_IMG = pygame.transform.scale(pygame.image.load('game_resources/wall.bmp'), (TILE_SIZE, TILE_SIZE))
+EXIT_IMG = pygame.transform.scale(pygame.image.load('game_resources/exit.bmp'), (TILE_SIZE, TILE_SIZE))
+STORY_IMG = pygame.image.load('game_resources/story.png')
 STORY_IMG = pygame.transform.scale(STORY_IMG, (SCREEN_WIDTH, SCREEN_HEIGHT-400))
-HERO_IMG = pygame.image.load('hero.png')
+HERO_IMG = pygame.image.load('game_resources/hero.png')
 HERO_IMG_BIG = pygame.transform.scale(HERO_IMG,(TILE_SIZE*4, TILE_SIZE*4))
 HERO_IMG = pygame.transform.scale(HERO_IMG,(TILE_SIZE, TILE_SIZE))
-VILLAN_IMG = pygame.image.load('villan.png')
+VILLAN_IMG = pygame.image.load('game_resources/enemy_1.png')
 VILLAN_IMG_BIG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
-VILLAN_IMG2 = pygame.image.load('villan2.png')
+VILLAN_IMG2 = pygame.image.load('game_resources/villan2.png')
 VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE, TILE_SIZE))
 
@@ -151,7 +151,7 @@ def load_map(filename):
         new_tilemap.append(row)
     return new_tilemap
 
-tilemap = load_map('path_to_your_map.txt')
+tilemap = load_map('game_resources/map.txt')
 
 
 tilemap=[]
@@ -352,7 +352,7 @@ enemies = [Enemy(5, 5, 'chase',1),Enemy(8, 5, 'chase',2)]
 
 def display_story(screen):
     txt=gpt4(THEME)
-    f = open("cutscene.txt", "w")
+    f = open("game_resources/cutscene.txt", "w")
     f.write(txt)
     f.close()
     t=textwrap.fill(txt,70)
