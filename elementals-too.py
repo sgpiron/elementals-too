@@ -131,6 +131,8 @@ VILLAN_IMG2 = pygame.image.load('game_resources/villan2.png')
 VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE*4, TILE_SIZE*4))
 VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE, TILE_SIZE))
 
+sound = pygame.mixer.Sound('punch.wav')
+
 # Load map from file
 def load_map(filename):
     with open(filename, 'r') as file:
@@ -225,6 +227,8 @@ def battle(player, enemy):
                 break'''
 
         player.attack_enemy(enemy)
+        #play punch sound
+        sound.play()
         # Check if enemy is defeated
         if enemy.health <= 0:
             print("Enemy is defeated!")
@@ -235,6 +239,8 @@ def battle(player, enemy):
         
         # Enemy's turn
         enemy.attack_player(player)
+        #play punch sound
+        sound.play()
 
         # Check if player is defeated
         if player.health <= 0:
