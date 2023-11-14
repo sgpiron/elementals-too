@@ -9,9 +9,7 @@ import sys
 
 
 # Temp settings
-GENERATE = True
-THEME = "Star Trek-like universe"
-PROMPT = THEME + " in a cinematic style"
+GENERATE = False
 
 # Setup
 openai.api_key = game_config.load_api_key()
@@ -92,4 +90,8 @@ def game_loop():
 
 
 if __name__ == "__main__":
+    # Create an all new theme for the game
+    # if GENERATE:
+    #     game_config.generate_all_assets()
+    # Run the main loop
     game_loop()

@@ -1,9 +1,12 @@
+import requests
+import openai
 import pygame
 
 
 class Config:
 
     def __init__(self):
+        self.theme = "Inside the Star Trek Enterprise"
         self._RESOURCE_PATH = "game_resources"
         self._game_settings = {
             "screen_width": 800,
@@ -21,45 +24,75 @@ class Config:
             "floor": {
                 "path": "floor.bmp",
                 "map_char": ".",
-                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
+                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"]),
+                "generation_size": "",
+                "file_type": "bmp",
+                "prompt": ""
             },
             "wall": {
                 "path": "wall.bmp",
                 "map_char": "#",
-                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
+                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"]),
+                "generation_size": "",
+                "file_type": "bmp",
+                "prompt": ""
             },
             "exit": {
                 "path": "exit.bmp",
                 "map_char": "*",
-                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
+                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"]),
+                "generation_size": "",
+                "file_type": "bmp",
+                "prompt": ""
             },
             "story": {
                 "path": "story.png",
-                "size": (self._game_settings["screen_width"], self._game_settings["screen_height"]-400)
+                "size": (self._game_settings["screen_width"], self._game_settings["screen_height"]-400),
+                "generation_size": "256x256",
+                "file_type": "png",
+                "prompt": ""
             },
             "hero_small": {
                 "path": "hero.png",
-                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
+                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"]),
+                "generation_size": "256x256",
+                "file_type": "png",
+                "prompt": ""
             },
             "hero_big": {
                 "path": "hero.png",
-                "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4)
+                "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4),
+                "generation_size": "",
+                "file_type": "png",
+                "prompt": ""
             },
             "enemy_1_small": {
                 "path": "enemy_1.png",
-                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
+                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"]),
+                "generation_size": "256x256",
+                "file_type": "png",
+                "prompt": ""
             },
             "enemy_1_big": {
                 "path": "enemy_1.png",
-                "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4)
+                "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4),
+                "generation_size": "",
+                "file_type": "png",
+                "prompt": ""
             },
             "enemy_2_small": {
                 "path": "enemy_2.png",
-                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"])
+                "size": (self._game_settings["tile_size"], self._game_settings["tile_size"]),
+                "generation_size": "256x256",
+                "file_type": "png",
+                "prompt": ""
             },
             "enemy_2_big": {
                 "path": "enemy_2.png",
-                "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4)
+                "size": (self._game_settings["tile_size"]*4, self._game_settings["tile_size"]*4),
+                "generation_size": "",
+                "file_type": "png",
+                "prompt": ""
             }
         }
         self.tilemap = self.load_map(self.get_asset_path("map"))
@@ -78,6 +111,24 @@ class Config:
                 row.append(char)
             tilemap.append(row)
         return tilemap
+    
+    def _call_image_generation(self, asset_name, asset_information):
+        url = openai.Image.create(
+            prompt=asset_information["prompt"],
+            n=1,
+            size=asset_information["size"]
+        )["data"][0]["url"]
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(self.get_asset_path(asset_name), "wb") as f:
+                f.wrtie(response.content)
+        else:
+            raise RuntimeError(response)
+    
+    def generate_all_assets(self):
+        for asset in self._assets:
+            if "size" in self._assets[asset]:
+                self._call_image_generation(asset, self._assets[asset])
 
     def get_setting(self, key):
         return self._game_settings[key]
