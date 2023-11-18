@@ -74,6 +74,25 @@ def gameover(screen):
                     pygame.quit()
                     sys.exit()    
 
+def victory(screen):
+    # Get the story text
+    story_text = "YOU WIN!!!"
+    # Display the story text
+    screen.blit(game_config.get_asset_as_image("story"), (0, 0))
+    font = pygame.font.SysFont('nineteenninetyseven11xb', 32)
+    text = font.render(story_text, True, (255, 255, 255))
+    screen.blit(text, (300, 300))
+    pygame.display.flip()
+    # Setup exit functionality
+    pygame.mixer.init()  # Initialize the mixer module.
+    sound1 = pygame.mixer.Sound('./game_resources/victory.mp3')
+    sound1.play()   
+    while True:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()   
 
 def display_stats(screen, character, text_location, image_location):
     font = pygame.font.SysFont('nineteenninetyseven11xb', 16)

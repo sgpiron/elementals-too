@@ -130,6 +130,9 @@ def game_loop():
 
             pygame.display.flip()
             clock.tick(60)
+    screen = pygame.display.set_mode((game_config.get_setting("screen_width"), game_config.get_setting("screen_height")))
+    pygame.display.set_caption(game_config.get_setting("screen_caption"))
+    pygame.mixer.music.pause()victory(screen)           
     pygame.quit()
     sys.exit()
 
