@@ -1,3 +1,7 @@
-The neon skyline of Tokyo's Kabukicho district paints a vibrant backdrop against the shadows. In a rain-soaked alley, our hero stands, a fallen Yakuza, haunted by his past but resolute. His scarred, tattooed body is a testament to battles fought and demons conquered. He cracks his knuckles, preparing for the unavoidable.
+{
+"act1": "In neon-lit Kabukicho, Tokyo, our hero, Kenji, a former yakuza seeking redemption, runs a noodle shop in a narrow alley. Over the clattering of bowls and drunken laughter, past haunted memories linger. The villain, Ryo, a cruel Yakuza boss, brings chaos into Kenji's peaceful life when Kenji's close friend and former gangmate Kaito goes missing. Kaito had been in deep gambling debt to Ryo's syndicate.",
 
-Emerging from the mist, the villain: a merciless Yakuza boss adorned in a tailored crimson suit, his eyes cold, his smile chilling. Unsheathing a razor-sharp katana, he steps into combat, his presence an embodiment of Tokyo's underworld.
+"act2": "After rumour of Kaito's death reaches him, Kenji leaves the safety of his shop, descending back into the underworld he left behind. Going up against Ryo's goons, Kenji gradually discovers the depth of Ryo’s influence over Kabukicho and the darkness it brings. With each fight, Kenji's old yakuza ghosts grow stronger, leading him to doubt if redemption was ever a possibility.",
+
+"act3": "In a final showdown, Ryo and Kenji battle atop a high-rise overlooking Kabukicho. It's a clash of ideals, past sins against a hopeful future. Kenji wins, but refuses to kill Ryo, choosing compassion over repeating old mistakes. He returns to run his noodle shop, now a symbol of his redemption, while Ryo faces justice. Kenji's former Yakuza ghosts are finally put to rest."
+}

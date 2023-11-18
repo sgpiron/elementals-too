@@ -6,7 +6,7 @@ import pygame
 class Config:
 
     def __init__(self):
-        self.theme = "Inside the Star Trek Enterprise"
+        self.theme = "Yakuza world in Tokyo's Kabukicho district"
         self._RESOURCE_PATH = "game_resources"
         self._game_settings = {
             "screen_width": 800,

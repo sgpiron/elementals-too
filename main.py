@@ -61,6 +61,11 @@ def game_loop():
         for n in range(0,random.randint(2,6)):
             enemies.append(Enemy(random.randint(1,10),random.randint(2,10),'chase',random.randint(1,2)))
         # Event loop
+
+        pygame.mixer.init()  # Initialize the mixer module.
+        pygame.mixer.music.load('./game_resources/bg_music.mp3')
+        pygame.mixer.music.play(-1,0.0)  
+
         while True:
             # Handle events
             for event in pygame.event.get():
@@ -98,6 +103,12 @@ def game_loop():
                     outcome = battle(player, enemy)
                     if outcome == 0:
                         enemies.remove(enemy)
+                    elif outcome == 1:
+                        print("ya dead!")
+                        screen = pygame.display.set_mode((game_config.get_setting("screen_width"), game_config.get_setting("screen_height")))
+                        pygame.display.set_caption(game_config.get_setting("screen_caption"))
+                        pygame.mixer.music.pause()
+                        gameover(screen)   
             
             # Display the player stats
             display_stats(screen, player, (200, game_config.get_setting("screen_height")), (0, game_config.get_setting("screen_height") - 240))
@@ -109,6 +120,11 @@ def game_loop():
             # Exit if player is on the exit tile
             if game_config.tilemap[player.y][player.x] == game_config.get_asset_map_char("exit"):
                 #next level:
+                
+                pygame.mixer.music.pause()
+                pygame.mixer.init()  # Initialize the mixer module.
+                sound1 = pygame.mixer.Sound('./game_resources/exit.mp3')
+                sound1.play()  
                 break
                 
 

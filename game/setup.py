@@ -54,6 +54,26 @@ def display_story(screen,act):
             if event.type == pygame.KEYDOWN:
                 return    
 
+def gameover(screen):
+    # Get the story text
+    story_text = "GAME OVER!"
+    # Display the story text
+    screen.blit(game_config.get_asset_as_image("story"), (0, 0))
+    font = pygame.font.SysFont('nineteenninetyseven11xb', 32)
+    text = font.render(story_text, True, (255, 255, 255))
+    screen.blit(text, (300, 300))
+    pygame.display.flip()
+    # Setup exit functionality
+    pygame.mixer.init()  # Initialize the mixer module.
+    sound1 = pygame.mixer.Sound('./game_resources/gameover.mp3')
+    sound1.play()   
+    while True:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()    
+
 
 def display_stats(screen, character, text_location, image_location):
     font = pygame.font.SysFont('nineteenninetyseven11xb', 16)
@@ -75,6 +95,9 @@ def battle(player, enemy):
         return 0
     # Perform the counter attack
     enemy.attack(player)
+    pygame.mixer.init()  # Initialize the mixer module.
+    sound1 = pygame.mixer.Sound('./game_resources/punch.wav')
+    sound1.play()
     # Check if the player is defeated
     if player.health <= 0:
         return 1
@@ -85,7 +108,7 @@ def battle(player, enemy):
                 pygame.quit()
                 sys.exit()
             if event.type in [pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN]:  # Any key or mouse click
-                return 1
+                return -1
     time.sleep(.25)
 
 
