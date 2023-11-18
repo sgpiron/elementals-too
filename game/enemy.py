@@ -23,26 +23,37 @@ class Enemy:
             return
     		
         if target_x > self.x:
-            if game_config.tilemap[self.y][self.x + 1] == game_config.get_asset_map_char("wall"):
-            	self.x=self.x
-            else:
-            	self.x += 1
+            try:
+                if game_config.tilemap[self.y][self.x + 1] == game_config.get_asset_map_char("wall"):
+                    self.x=self.x
+                else:
+                    self.x += 1
+            except IndexError:
+                pass
         elif target_x < self.x:
-            if game_config.tilemap[self.y][self.x-1] == game_config.get_asset_map_char("wall"):
-            	self.x=self.x
-            else:
-	            self.x -= 1
-
+            try:
+                if game_config.tilemap[self.y][self.x-1] == game_config.get_asset_map_char("wall"):
+                    self.x=self.x
+                else:
+                    self.x -= 1
+            except IndexError:
+                pass    
         if target_y > self.y:
-            if game_config.tilemap[self.y+1][self.x] == game_config.get_asset_map_char("wall"):
-                self.y=self.y	
-            else:
-                self.y += 1
+            try:
+                if game_config.tilemap[self.y+1][self.x] == game_config.get_asset_map_char("wall"):
+                    self.y=self.y	
+                else:
+                    self.y += 1
+            except IndexError:
+                pass  
         elif target_y < self.y:
-            if game_config.tilemap[self.y-1][self.x] == game_config.get_asset_map_char("wall"):
-                self.y=self.y	
-            else: 
-                self.y -= 1
+            try:
+                if game_config.tilemap[self.y-1][self.x] == game_config.get_asset_map_char("wall"):
+                    self.y=self.y	
+                else: 
+                    self.y -= 1
+            except IndexError:
+                pass  
 
     def move_away_from(self, target_x, target_y):
         if target_x > self.x:

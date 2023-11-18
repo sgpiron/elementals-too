@@ -3,9 +3,11 @@ from game.settings import game_config
 import textwrap
 import openai
 import pygame
+import json
 
 
 def generate_assets():
+
     [
         { "role": "system", "content": "Act as a professional story designer for an indy video game studio." },
         { "role": "system", "content": f"You are working on a rouge-like video game with the theme: {THEME}" },
@@ -32,10 +34,11 @@ def generate_text(messages):
     )["choices"][0]["message"]["content"]
 
 
-def display_story(screen):
+def display_story(screen,act):
     # Get the story text
     with open(game_config.get_asset_path("cutscene"), "r") as f:
-        story_text = f.read()
+        story = json.load(f)
+        story_text  = story[act]
     story_text = textwrap.fill(story_text, 70)
     story_text = story_text.split("\n")
     # Display the story text
@@ -48,12 +51,8 @@ def display_story(screen):
     # Setup exit functionality
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        keys = pygame.key.get_pressed()
-        if event.type in [pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN]:
-            return
+            if event.type == pygame.KEYDOWN:
+                return    
 
 
 def display_stats(screen, character, text_location, image_location):
