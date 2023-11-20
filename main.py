@@ -2,6 +2,7 @@ from game.settings import game_config
 from game.player import Player
 from game.enemy import Enemy
 from game.setup import *
+import title_screen
 
 import openai
 import pygame
@@ -132,7 +133,8 @@ def game_loop():
             clock.tick(60)
     screen = pygame.display.set_mode((game_config.get_setting("screen_width"), game_config.get_setting("screen_height")))
     pygame.display.set_caption(game_config.get_setting("screen_caption"))
-    pygame.mixer.music.pause()victory(screen)           
+    pygame.mixer.music.pause()
+    victory(screen)           
     pygame.quit()
     sys.exit()
 
@@ -141,4 +143,5 @@ if __name__ == "__main__":
     # if GENERATE:
     #     game_config.generate_all_assets()
     # Run the main loop
+    title_screen.intro()
     game_loop()
