@@ -4,6 +4,7 @@ import textwrap
 import openai
 import pygame
 import json
+import random
 
 
 def generate_assets():
@@ -25,7 +26,19 @@ def draw_map(screen):
                 screen.blit(game_config.get_asset_as_image("floor"), (x * game_config.get_setting("tile_size"), y * game_config.get_setting("tile_size")))
             elif tile == game_config.get_asset_map_char("exit"):
                 screen.blit(game_config.get_asset_as_image("exit"), (x * game_config.get_setting("tile_size"), y * game_config.get_setting("tile_size")))
+   
+    '''tilemap=[]
+    for i in range(0,9):
+        row=[]
+        for j in range(0,20):
+            row.append(game_config.get_asset_as_image("floor"))
+        tilemap.append(row)
 
+    for i in range(0,random.randint(15,30)):
+        tilemap[random.randint(0,8)][random.randint(0,19)]=game_config.get_asset_as_image("wall")
+
+    tilemap[random.randint(0,8)][random.randint(0,19)]=game_config.get_asset_as_image("exit")
+    game_config.tilemap=tilemap'''
 
 def generate_text(messages):
     return openai.ChatCompletion.create(

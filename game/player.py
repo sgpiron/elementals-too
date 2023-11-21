@@ -7,7 +7,7 @@ class Player:
         self.x = x
         self.y = y
         self.health = 100
-        self.attack_strength = 10
+        self.attack_strength = 25
         self.defense = 5
         self.weapon = "knife"
         self.gold = 100

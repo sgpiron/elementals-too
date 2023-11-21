@@ -1,7 +1,7 @@
 import requests
 import openai
 import pygame
-
+import random 
 
 class Config:
 
@@ -102,14 +102,25 @@ class Config:
             return f.read().strip()
 
     def load_map(self, filename):
-        with open(filename, "r") as f:
+        '''with open(filename, "r") as f:
             lines = f.readlines()
         tilemap = []
         for line in lines:
             row = []
             for char in line.strip():
                 row.append(char)
+            tilemap.append(row)'''
+        tilemap=[]
+        for i in range(0,9):
+            row=[]
+            for j in range(0,20):
+                row.append(".")
             tilemap.append(row)
+
+        for i in range(0,random.randint(15,30)):
+            tilemap[random.randint(0,8)][random.randint(0,19)]="#"
+
+        tilemap[random.randint(0,8)][random.randint(0,19)]="*"  
         return tilemap
     
     def _call_image_generation(self, asset_name, asset_information):

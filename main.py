@@ -47,7 +47,8 @@ def game_loop():
     for act in ['act1','act2','act3']:
 
         
-        
+        game_config.tilemap=game_config.load_map("")
+
         # Setup the game screen
         screen = pygame.display.set_mode((game_config.get_setting("screen_width"), game_config.get_setting("screen_height")))
         pygame.display.set_caption(game_config.get_setting("screen_caption"))
