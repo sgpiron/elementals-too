@@ -42,7 +42,7 @@ def draw_options():
 
 
 def draw_text_input():
-    global text, input_active
+    
     pygame.draw.rect(screen, GREY, input_box, 2)
     txt_surf = font.render(text, True, text_color)
     screen.blit(txt_surf, (input_box.x + 5, input_box.y + 5))
@@ -50,6 +50,7 @@ def draw_text_input():
 
 
 def intro():
+    global text, input_active
     input_active=True
     # Main loop
     running = True
@@ -77,6 +78,7 @@ def intro():
                 if input_active:
                     if event.key == pygame.K_RETURN:
                         print(f"Entered text: {text}")
+                        return text
                         text = ""
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]
