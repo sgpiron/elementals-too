@@ -50,8 +50,10 @@ def draw_text_input():
 
 
 def intro():
+    input_active=True
     # Main loop
     running = True
+    text=""
     while running:
         screen.fill(BLACK)
         screen.blit(pygame.image.load('game_resources/title.png'),(0,0))
@@ -68,10 +70,9 @@ def intro():
                     for rect in option_rects:
                         if rect.collidepoint(event.pos):
                             print(f"You clicked {options[option_rects.index(rect)]}!")
-                            if options[option_rects.index(rect)] == "Prompt> 'Yakuza world in Tokyo's Kabukicho district'":
-                                return -1
-                                
+                            return options[option_rects.index(rect)][8:]
 
+    
             elif event.type == pygame.KEYDOWN:
                 if input_active:
                     if event.key == pygame.K_RETURN:

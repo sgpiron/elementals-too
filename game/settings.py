@@ -16,7 +16,7 @@ class Config:
         }
         self._assets = {
             "cutscene": {
-                "path": "cutscene.txt"
+                "path": "cutscene.json"
             },
             "map": {
                 "path": "map.txt"

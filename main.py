@@ -1,3 +1,4 @@
+from distutils.command.sdist import sdist
 from game.settings import game_config
 from game.player import Player
 from game.enemy import Enemy
@@ -30,10 +31,11 @@ def gpt4(premise):
     )
     return response["choices"][0]["message"]["content"]
 
-txt=gpt4(game_config.theme)
-f = open("game_resources/cutscene.txt", "w")
-f.write(txt)
-f.close()
+def genStory():
+    txt=gpt4(game_config.theme)
+    f = open("game_resources/cutscene.json", "w")
+    f.write(txt)
+    f.close()
 
 # Game loop
 def game_loop():
@@ -144,5 +146,21 @@ if __name__ == "__main__":
     # if GENERATE:
     #     game_config.generate_all_assets()
     # Run the main loop
-    title_screen.intro()
+    
+    prompt=title_screen.intro()
+    print("loop")
+    print(prompt)
+    game_config.theme=prompt
+    if prompt=="'Yakuza world in Tokyo's Kabukicho district'":
+        game_config._assets["cutscene"]["path"]="0/cutscene.json"
+        print(game_config._assets["cutscene"]["path"])
+    elif prompt=="'Cold war spy movie set in Moscow'":
+        game_config._assets["cutscene"]["path"]="1/cutscene.json"
+        print(game_config._assets["cutscene"]["path"])
+    elif prompt=="'Gitty Mafia world in 1970s New York City'":
+        game_config._assets["cutscene"]["path"]="2/cutscene.json"
+        print(game_config._assets["cutscene"]["path"])    
+    else:
+        genStory()
+    #getStory()
     game_loop()
