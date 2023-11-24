@@ -20,7 +20,7 @@ BLUE = (0,0,255)
 font = pygame.font.SysFont("nineteenninetyseven11xb", 16)
 
 # Define the predefined options
-options = ["Prompt> 'Yakuza world in Tokyo's Kabukicho district'", "Prompt> 'Cold war spy movie set in Moscow'", "Prompt> 'Gitty Mafia world in 1970s New York City'"]
+options = ["Prompt> 'Yakuza world in Tokyo's Kabukicho district'", "Prompt> 'Cold war spy movie set in Moscow'", "Prompt> 'Gritty Mafia world in 1970s New York City'"]
 option_rects = []
 
 # Define text input variables

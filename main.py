@@ -9,6 +9,7 @@ import openai
 import pygame
 import sys
 import random
+import requests
 
 
 # Temp settings
@@ -18,8 +19,73 @@ GENERATE = False
 openai.api_key = game_config.load_api_key()
 pygame.init()
 
+def genHeroImage():
+    PROMPT =  game_config.theme+" hero character cinematic style"
+    print(PROMPT)
+    response = openai.Image.create(
+        prompt=PROMPT,
+        n=1,
+        size="256x256",
+    )
+
+    img_url = response["data"][0]["url"]
+
+    response = requests.get(img_url)
+    if response.status_code:
+        fp = open('game_resources/3/hero.png', 'wb')
+        fp.write(response.content)
+        fp.close()
 
 
+def genVillainImages():
+    PROMPT =  game_config.theme+" villain character cinematic style"
+
+    response = openai.Image.create(
+        prompt=PROMPT,
+        n=5,
+        size="256x256",
+    )
+ 
+    
+    #yes this should be a loop, looked this up, need to convert the response payload into a dict (perhaps using JSON). Too Lazy to do. :)  
+
+    img_url = response["data"][0]["url"]
+
+    rp = requests.get(img_url)
+    if rp.status_code:
+        fp = open('game_resources/3/villain'+str(0)+'.png', 'wb')
+        fp.write(rp.content)
+        fp.close()
+    
+    img_url = response["data"][1]["url"]
+
+    rp = requests.get(img_url)
+    if rp.status_code:
+        fp = open('game_resources/3/villain'+str(1)+'.png', 'wb')
+        fp.write(rp.content)
+        fp.close()
+
+    img_url = response["data"][2]["url"]
+
+    rp = requests.get(img_url)
+    if rp.status_code:
+        fp = open('game_resources/3/villain'+str(2)+'.png', 'wb')
+        fp.write(rp.content)
+        fp.close()
+
+def scaleImages():
+    TILE_SIZE=game_config._game_settings["tile_size"]
+    print(TILE_SIZE)
+    print(game_config.get_asset_path("hero_small"))
+    HERO_IMG = pygame.image.load(game_config.get_asset_path("hero_small"))
+    game_config._assets["hero_big"]["path"] = pygame.transform.scale(HERO_IMG,(TILE_SIZE*4, TILE_SIZE*4))
+    print(game_config.get_asset_path("hero_big"))
+    '''VILLAN_IMG = pygame.image.load('game_resources/enemy_1.png')
+    VILLAN_IMG_BIG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE*4, TILE_SIZE*4))
+    VILLAN_IMG = pygame.transform.scale(VILLAN_IMG,(TILE_SIZE, TILE_SIZE))
+    VILLAN_IMG2 = pygame.image.load('game_resources/villan2.png')
+    VILLAN_IMG_BIG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE*4, TILE_SIZE*4))
+    VILLAN_IMG2 = pygame.transform.scale(VILLAN_IMG2,(TILE_SIZE, TILE_SIZE))'''
 
 def gpt4(premise):
     response=openai.ChatCompletion.create(
@@ -157,10 +223,37 @@ if __name__ == "__main__":
     elif prompt=="'Cold war spy movie set in Moscow'":
         game_config._assets["cutscene"]["path"]="1/cutscene.json"
         print(game_config._assets["cutscene"]["path"])
-    elif prompt=="'Gitty Mafia world in 1970s New York City'":
+        game_config.theme="1980s Cold war spy movie set in eastern europe"
+        #genHeroImage()
+        #genVillainImages() 
+        game_config._assets["hero_small"]["path"]="1/hero.png"
+        game_config._assets["enemy_1_small"]["path"]="1/villain0.png"
+        game_config._assets["enemy_2_small"]["path"]="1/villain1.png"
+        game_config._assets["hero_big"]["path"]="1/hero.png"
+        game_config._assets["enemy_1_big"]["path"]="1/villain0.png"
+        game_config._assets["enemy_2_big"]["path"]="1/villain1.png"
+    elif prompt=="'Gritty Mafia world in 1970s New York City'":
         game_config._assets["cutscene"]["path"]="2/cutscene.json"
-        print(game_config._assets["cutscene"]["path"])    
+        print(game_config._assets["cutscene"]["path"])  
+        #game_config.theme="1970s New York italian gangster"
+        #genHeroImage() 
+        #genVillainImages() 
+        game_config._assets["hero_small"]["path"]="2/hero.png"
+        game_config._assets["enemy_1_small"]["path"]="2/villain0.png"
+        game_config._assets["enemy_2_small"]["path"]="2/villain1.png"
+        game_config._assets["hero_big"]["path"]="2/hero.png"
+        game_config._assets["enemy_1_big"]["path"]="2/villain0.png"
+        game_config._assets["enemy_2_big"]["path"]="2/villain1.png"
+        #scaleImages()
     else:
         genStory()
+        genHeroImage() 
+        genVillainImages() 
+        game_config._assets["hero_small"]["path"]="3/hero.png"
+        game_config._assets["enemy_1_small"]["path"]="3/villain0.png"
+        game_config._assets["enemy_2_small"]["path"]="3/villain1.png"
+        game_config._assets["hero_big"]["path"]="3/hero.png"
+        game_config._assets["enemy_1_big"]["path"]="3/villain0.png"
+        game_config._assets["enemy_2_big"]["path"]="3/villain1.png"
     #getStory()
     game_loop()
